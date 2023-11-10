@@ -23,7 +23,7 @@ class HighScoringWords:
                 (key, val) = line.split(':')
                 self.letter_values[str(key).strip().lower()] = int(val)
 
-        self.words_set = set(self.valid_words)
+        self.board_score = self._board_table()
 
     def build_leaderboard_for_word_list(self):
         """
@@ -31,9 +31,7 @@ class HighScoringWords:
         :return: The list of top words.
         """
 
-        """ dictionary solution """
-
-        return self.ordered_scored_words(self.valid_words)
+        return self.ordered_scored_words(self.board_score)
 
     def build_leaderboard_for_letters(self, starting_letters):
         """
@@ -46,11 +44,11 @@ class HighScoringWords:
         """
 
         # updates the combs with all the permutations
-        combs = []
+        letter_combinations = []
         def findCombs(curr_comb, letters):
 
             if curr_comb:
-                combs.append(curr_comb)
+                letter_combinations.append(curr_comb)
 
             for i in range(len(letters)):
                 findCombs(curr_comb + letters[i],
@@ -59,10 +57,15 @@ class HighScoringWords:
         # find all possible combinations from the strings
         findCombs("", starting_letters)
 
-        # return only those that are in set
-        return self.ordered_scored_words([word for word in combs if word in self.words_set])
+        # create a score table of words from the current list of words
+        score_table = {}
+        for combination in letter_combinations:
+            if combination in self.board_score:
+                score_table[combination] = self.board_score[combination]
 
-    def score_word(self, word):
+        return self.ordered_scored_words(score_table)
+
+    def _score_word(self, word):
         """
         return the score of a word
         :param word: a word
@@ -74,16 +77,23 @@ class HighScoringWords:
 
         return score
 
-    def ordered_scored_words(self, words_list):
+    def _board_table(self):
+        """
+        Builds the board table with all the scores
+        :return:
+        """
+        score_table = {}
+        for word in self.valid_words:
+            score_table[word] = self._score_word(word)
+
+        return score_table
+
+    def ordered_scored_words(self, word_dictionary):
         """
 
         :param words_list: Gets as an input the words
         :return: Returns a list with MAX_LEADERBOARD_LENGTH with list ordered first based on score desc and after
                 alphabetically asc
         """
-        score_board = {}
-        for word in words_list:
-            score_board[word] = self.score_word(word)
-
-        return list(dict(sorted(score_board.items(), key=lambda item: (-item[1], item[0]))).keys())[
+        return list(dict(sorted(word_dictionary.items(), key=lambda item: (-item[1], item[0]))).keys())[
                :HighScoringWords.MAX_LEADERBOARD_LENGTH]
