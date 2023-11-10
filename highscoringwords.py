@@ -1,7 +1,5 @@
 __author__ = 'codesse'
 
-import pandas as pd
-
 
 class HighScoringWords:
     MAX_LEADERBOARD_LENGTH = 100  # the maximum number of items that can appear in the leaderboard
@@ -37,22 +35,6 @@ class HighScoringWords:
 
         return self.ordered_scored_words(self.valid_words)
 
-        """" pandas solution """
-        # def process_row(row):
-        #     # Access individual columns using row['column_name'] and perform some operation
-        #     word = row["words"]
-        #     curr_score = 0
-        #     for letter in word:
-        #         curr_score += self.letter_values[letter]
-        #
-        #     return curr_score
-        #
-        # newdf = pd.DataFrame(self.valid_words, columns=["words"])
-        # newdf["score"] = newdf.apply(process_row, axis=1)
-        # newdf = newdf.sort_values(by=['score', 'words'], ascending=[False, True])[:100]
-        # print ("the time inside the function is :",final_time)
-        # return newdf
-
     def build_leaderboard_for_letters(self, starting_letters):
         """
         Build a leaderboard of the top scoring MAX_LEADERBOARD_LENGTH words that can be built using only the letters contained in the starting_letters String.
@@ -63,20 +45,19 @@ class HighScoringWords:
         :return: The list of top buildable words.
         """
 
+        # updates the combs with all the permutations
         combs = []
-        """backtracking solution"""
-
-        def findcombs(curr_comb, starting_letters):
+        def findCombs(curr_comb, letters):
 
             if curr_comb:
                 combs.append(curr_comb)
 
-            for i in range(len(starting_letters)):
-                findcombs(curr_comb + starting_letters[i],
-                          starting_letters[:i] + starting_letters[i + 1:len(starting_letters)])
+            for i in range(len(letters)):
+                findCombs(curr_comb + letters[i],
+                          letters[:i] + letters[i + 1:len(letters)])
 
         # find all possible combinations from the strings
-        findcombs("", starting_letters)
+        findCombs("", starting_letters)
 
         # return only those that are in set
         return self.ordered_scored_words([word for word in combs if word in self.words_set])
