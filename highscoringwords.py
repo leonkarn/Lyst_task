@@ -23,7 +23,7 @@ class HighScoringWords:
                 (key, val) = line.split(':')
                 self.letter_values[str(key).strip().lower()] = int(val)
 
-        self.board_score = self.board_table()
+        self.board_score = self.build_board_score_table()
 
     def build_leaderboard_for_word_list(self):
         """
@@ -43,8 +43,9 @@ class HighScoringWords:
         :return: The list of top buildable words.
         """
 
-        # updates the combs with all the permutations
+        # Finds all available combinations from the letters provided as starting_letters
         letter_combinations = []
+
         def findCombs(curr_comb, letters):
 
             if curr_comb:
@@ -54,7 +55,6 @@ class HighScoringWords:
                 findCombs(curr_comb + letters[i],
                           letters[:i] + letters[i + 1:len(letters)])
 
-        # find all possible combinations from the strings
         findCombs("", starting_letters)
 
         # create a score table of words from the current list of words
@@ -65,11 +65,11 @@ class HighScoringWords:
 
         return self.ordered_scored_words(score_table)
 
-    def score_word(self, word):
+    def _score_word(self, word):
         """
         return the score of a word
         :param word: a word
-        :return: The score of word
+        :return: The score of word as an integer
         """
         score = 0
         for letter in word:
@@ -77,10 +77,10 @@ class HighScoringWords:
 
         return score
 
-    def board_table(self):
+    def _build_board_score_table(self):
         """
         Builds the board table with all the scores
-        :return:
+        :return: A dictionary of every word with the score
         """
         score_table = {}
         for word in self.valid_words:
@@ -88,12 +88,12 @@ class HighScoringWords:
 
         return score_table
 
-    def ordered_scored_words(self, word_dictionary):
+    def _ordered_scored_words(self, score_table):
         """
 
         :param words_list: Gets as an input the words
         :return: Returns a list with MAX_LEADERBOARD_LENGTH with list ordered first based on score desc and after
                 alphabetically asc
         """
-        return list(dict(sorted(word_dictionary.items(), key=lambda item: (-item[1], item[0]))).keys())[
+        return list(dict(sorted(score_table.items(), key=lambda item: (-item[1], item[0]))).keys())[
                :HighScoringWords.MAX_LEADERBOARD_LENGTH]
