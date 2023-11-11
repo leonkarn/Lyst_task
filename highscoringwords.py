@@ -1,5 +1,7 @@
 __author__ = 'codesse'
-
+"""
+Python Version : 3.8
+"""
 
 class HighScoringWords:
     MAX_LEADERBOARD_LENGTH = 100  # the maximum number of items that can appear in the leaderboard
