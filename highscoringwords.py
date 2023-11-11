@@ -23,7 +23,7 @@ class HighScoringWords:
                 (key, val) = line.split(':')
                 self.letter_values[str(key).strip().lower()] = int(val)
 
-        self.board_score = self._board_table()
+        self.board_score = self.board_table()
 
     def build_leaderboard_for_word_list(self):
         """
@@ -65,7 +65,7 @@ class HighScoringWords:
 
         return self.ordered_scored_words(score_table)
 
-    def _score_word(self, word):
+    def score_word(self, word):
         """
         return the score of a word
         :param word: a word
@@ -77,14 +77,14 @@ class HighScoringWords:
 
         return score
 
-    def _board_table(self):
+    def board_table(self):
         """
         Builds the board table with all the scores
         :return:
         """
         score_table = {}
         for word in self.valid_words:
-            score_table[word] = self._score_word(word)
+            score_table[word] = self.score_word(word)
 
         return score_table
 
