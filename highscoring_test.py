@@ -4,11 +4,11 @@ from highscoringwords import HighScoringWords
 
 class TestHighScoringWords(unittest.TestCase):
     def setUp(self):
-        self.wordlist_path = 'test_wordlist.txt'
-        self.high_scoring_words = HighScoringWords(validwords=self.wordlist_path)
+        self.high_scoring_words = HighScoringWords()
 
     def test_build_leaderboard_for_word_list(self):
         leaderboard = self.high_scoring_words.build_leaderboard_for_word_list()
+        self.assertEqual(leaderboard[0],"razzamatazzes")
         self.assertEqual(100, len(leaderboard))
 
     def test_build_leaderboard_for_letters(self):
@@ -22,6 +22,7 @@ class TestHighScoringWords(unittest.TestCase):
 
     def test_build_board_score_table(self):
         board_score = self.high_scoring_words._build_board_score_table()
+        self.assertEqual(board_score["razzamatazzes"],51)
         self.assertEqual(len(board_score), len(self.high_scoring_words.valid_words))
 
     def test_ordered_scored_words(self):
@@ -29,6 +30,7 @@ class TestHighScoringWords(unittest.TestCase):
         score_table = {'word1': 3, 'word2': 8, 'word4': 5}
         result = self.high_scoring_words._ordered_scored_words(score_table)
         self.assertEqual(result, ['word2', 'word4', 'word1'])
+
 
 if __name__ == '__main__':
     unittest.main()
