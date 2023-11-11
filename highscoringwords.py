@@ -23,7 +23,7 @@ class HighScoringWords:
                 (key, val) = line.split(':')
                 self.letter_values[str(key).strip().lower()] = int(val)
 
-        self.board_score = self.build_board_score_table()
+        self.board_score = self._build_board_score_table()
 
     def build_leaderboard_for_word_list(self):
         """
@@ -31,7 +31,7 @@ class HighScoringWords:
         :return: The list of top words.
         """
 
-        return self.ordered_scored_words(self.board_score)
+        return self._ordered_scored_words(self.board_score)
 
     def build_leaderboard_for_letters(self, starting_letters):
         """
@@ -63,7 +63,7 @@ class HighScoringWords:
             if combination in self.board_score:
                 score_table[combination] = self.board_score[combination]
 
-        return self.ordered_scored_words(score_table)
+        return self._ordered_scored_words(score_table)
 
     def _score_word(self, word):
         """
@@ -84,7 +84,7 @@ class HighScoringWords:
         """
         score_table = {}
         for word in self.valid_words:
-            score_table[word] = self.score_word(word)
+            score_table[word] = self._score_word(word)
 
         return score_table
 
