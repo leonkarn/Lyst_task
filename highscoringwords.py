@@ -93,7 +93,7 @@ class HighScoringWords:
     def _ordered_scored_words(self, score_table):
         """
 
-        :param words_list: Gets as an input the words
+        :param score_table: Gets as an input the words
         :return: Returns a list with MAX_LEADERBOARD_LENGTH with list ordered first based on score desc and after
                 alphabetically asc
         """
