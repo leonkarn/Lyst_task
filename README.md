@@ -11,7 +11,7 @@ docker build -t lyst_task . && docker run lyst_task
 ~~~
 
 I have also included a main.py file to run the methods.
-If you have set up python. You can try this by running  :
+If you have set up Python. You can try this by running  :
 ~~~
 python main.py
 ~~~
